@@ -20,7 +20,7 @@ Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
 Route.get('movies', 'MovieController.index')
-Route.get('movies/:id', 'MovieController.show')
+Route.get('movies/:id', 'MovieController.show').middleware(['FindMovie'])
 Route.post('movies', 'MovieController.store')
-Route.patch('movies/:id', 'MovieController.update')
-Route.delete('movies/:id', 'MovieController.delete')
+Route.patch('movies/:id', 'MovieController.update').middleware(['FindMovie'])
+Route.delete('movies/:id', 'MovieController.delete').middleware(['FindMovie'])

@@ -78,21 +78,16 @@ class MovieController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ request, response, view , params: { id } }) {
-    const movie = await Movie.find(id)
+  async show ({ request, response, params: { id } }) {
+    const movie = request.movie
 
-    if(movie) {
       response.status(200).json({
         message: "Here is your movie",
         data: movie
       })
-    }else {
-      response.status(404).json({
-        message: "No such movie here",
-        id
-      })
+  
     }
-  }
+  
 
   /**
    * Render a form to update an existing movie.
@@ -117,12 +112,8 @@ class MovieController {
    * @param {Response} ctx.response
    */
   async update ({ request, response, params: { id } }) {
+    const { title, vote_average, overview, release_date, cover_image, background_image, movie } = request.post() 
 
-    const movie = await Movie.find(id)
-
-    if(movie) {
-      const { title, vote_average, overview, release_date, cover_image, background_image } = request.post() 
-      
       movie.title = title
       movie.vote_average = vote_average
       movie.overview = overview
@@ -136,12 +127,7 @@ class MovieController {
         message: "Successfully updated this movie.",
         data: movie
       })
-    } else {
-      response.status(404).json({
-        message: "No such movie here",
-        id
-      })
-    }
+  
   }
 
   /**
@@ -153,9 +139,7 @@ class MovieController {
    * @param {Response} ctx.response
    */
   async delete ({ request, response, params: { id } }) {
-    const movie = await Movie.find(id)
-
-    if(movie) {
+    const movie  = request.movie
 
       await movie.delete()
       
@@ -163,12 +147,7 @@ class MovieController {
         message: "Successfully deleted this movie.",
         id
       })
-    } else {
-      response.status(404).json({
-        message: "No such movie here",
-        id
-      })
-    }
+
   }
 }
 
